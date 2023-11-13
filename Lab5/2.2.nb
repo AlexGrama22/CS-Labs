@@ -1,0 +1,252 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.1' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      8861,        244]
+NotebookOptionsPosition[      8161,        223]
+NotebookOutlinePosition[      8559,        239]
+CellTagsIndexPosition[      8516,        236]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{"Define", " ", "Parameters", " ", "and", " ", "Keys"}], "*)"}], 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+    "p", "=", 
+     "323170060713110073001535134778251633624880571334890751745884341392698068\
+341362100027920563626401646854585563579353308169288290230805734726252735547424\
+612457410262025279165729728627063003252634282131457669314142236542209411113486\
+299916574782680342305530863490506355577122191878903327295696961297438562417412\
+362372251973464026918557977679768230146253979330580152268587307611975324364674\
+758554607150438968449403661304976978128542959586595975670512838521327844685229\
+255045682728791137200989318739591433741758378260002780349731985520606075332341\
+22603254684088120031105907484281003994966956119696956248629032338072839127039"\
+}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"g", "=", "2"}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"x", "=", 
+     RowBox[{"RandomInteger", "[", 
+      RowBox[{"{", 
+       RowBox[{"1", ",", 
+        RowBox[{"p", "-", "2"}]}], "}"}], "]"}]}], ";", 
+    RowBox[{"(*", 
+     RowBox[{"Private", " ", "key"}], "*)"}], 
+    RowBox[{"y", "=", 
+     RowBox[{"PowerMod", "[", 
+      RowBox[{"g", ",", "x", ",", "p"}], "]"}]}], ";", 
+    RowBox[{"(*", 
+     RowBox[{"Public", " ", "key"}], "*)"}], 
+    RowBox[{"(*", 
+     RowBox[{
+     "Convert", " ", "Hexadecimal", " ", "Message", " ", "to", " ", 
+      "Decimal"}], "*)"}], 
+    RowBox[{
+    "hexMessage", "=", 
+     "\"\<47 72 61 6D 61 20 41 6C 65 78 61 6E 64 72 75\>\""}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"decimalMessage", "=", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"ToExpression", "[", 
+        RowBox[{"\"\<16^^\>\"", "<>", "#"}], "]"}], "&"}], "/@", 
+      RowBox[{"StringSplit", "[", "hexMessage", "]"}]}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"ElGamal", " ", "Encryption", " ", "Function"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"encrypt", "[", 
+      RowBox[{"message_", ",", "p_", ",", "g_", ",", "y_"}], "]"}], ":=", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"k", ",", "c1", ",", "c2"}], "}"}], ",", 
+       RowBox[{
+        RowBox[{"k", "=", 
+         RowBox[{"RandomInteger", "[", 
+          RowBox[{"{", 
+           RowBox[{"1", ",", 
+            RowBox[{"p", "-", "2"}]}], "}"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"c1", "=", 
+         RowBox[{"PowerMod", "[", 
+          RowBox[{"g", ",", "k", ",", "p"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"c2", "=", 
+         RowBox[{"Mod", "[", 
+          RowBox[{
+           RowBox[{"message", "*", 
+            RowBox[{"PowerMod", "[", 
+             RowBox[{"y", ",", "k", ",", "p"}], "]"}]}], ",", "p"}], "]"}]}], 
+        ";", "\[IndentingNewLine]", 
+        RowBox[{"{", 
+         RowBox[{"c1", ",", "c2"}], "}"}]}]}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Encrypt", " ", "Each", " ", "Character", " ", "in", " ", "the", " ", 
+     "Message"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"encryptedMessage", "=", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"encrypt", "[", 
+        RowBox[{"#", ",", "p", ",", "g", ",", "y"}], "]"}], "&"}], "/@", 
+      "decimalMessage"}]}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"ElGamal", " ", "Decryption", " ", "Function"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"decrypt", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"c1_", ",", "c2_"}], "}"}], ",", "p_", ",", "x_"}], "]"}], ":=", 
+     RowBox[{"Mod", "[", 
+      RowBox[{
+       RowBox[{"c2", "*", 
+        RowBox[{"PowerMod", "[", 
+         RowBox[{"c1", ",", 
+          RowBox[{"p", "-", "1", "-", "x"}], ",", "p"}], "]"}]}], ",", "p"}], 
+      "]"}]}], ";"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Decrypt", " ", "Each", " ", "Character", " ", "in", " ", "the", " ", 
+     "Encrypted", " ", "Message"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"decryptedMessage", "=", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"decrypt", "[", 
+        RowBox[{"#", ",", "p", ",", "x"}], "]"}], "&"}], "/@", 
+      "encryptedMessage"}]}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{
+     "\"\<Grama Alexandru in Decimal Form: \>\"", ",", "decimalMessage"}], 
+     "]"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{
+     "\"\<Decrypted Message in Decimal Form: \>\"", ",", "decryptedMessage"}],
+      "]"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"Print", "[", 
+      RowBox[{"\"\<Encrypted Message \>\"", ",", "encryptedMessage"}], "]"}], 
+     ";"}], "*)"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"Print", "[", 
+      RowBox[{"\"\<x = \>\"", ",", "x"}], "]"}], ";"}], "*)"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Verify", " ", "if", " ", "Decryption", " ", "Matches", " ", "Original", 
+     " ", "Message"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{"decryptedMessage", "\[Equal]", "decimalMessage"}], 
+   "\n"}]}]], "Input",
+ CellChangeTimes->{{3.908821821945341*^9, 3.9088218219463425`*^9}, {
+  3.9088218537268705`*^9, 3.908821913695962*^9}, {3.908821958999337*^9, 
+  3.9088221722949967`*^9}, {3.9088222469529133`*^9, 3.908822253275536*^9}},
+ CellLabel->
+  "In[563]:=",ExpressionUUID->"c4b33d4c-22f6-4451-b904-82f896e93d9f"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Grama Alexandru in Decimal Form: \"\>", "\[InvisibleSpace]", 
+   RowBox[{"{", 
+    RowBox[{
+    "71", ",", "114", ",", "97", ",", "109", ",", "97", ",", "32", ",", "65", 
+     ",", "108", ",", "101", ",", "120", ",", "97", ",", "110", ",", "100", 
+     ",", "114", ",", "117"}], "}"}]}],
+  SequenceForm[
+  "Grama Alexandru in Decimal Form: ", {71, 114, 97, 109, 97, 32, 65, 108, 
+   101, 120, 97, 110, 100, 114, 117}],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.908821967226804*^9, 3.908822009132449*^9, {3.9088220511590195`*^9, 
+   3.9088220775452127`*^9}, {3.9088221307694893`*^9, 3.9088221575811205`*^9}, 
+   3.908822259065814*^9},
+ CellLabel->
+  "During evaluation of \
+In[563]:=",ExpressionUUID->"3cdcb6b9-6dc6-4a18-833d-2384959b63d3"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Decrypted Message in Decimal Form: \"\>", "\[InvisibleSpace]", 
+   RowBox[{"{", 
+    RowBox[{
+    "71", ",", "114", ",", "97", ",", "109", ",", "97", ",", "32", ",", "65", 
+     ",", "108", ",", "101", ",", "120", ",", "97", ",", "110", ",", "100", 
+     ",", "114", ",", "117"}], "}"}]}],
+  SequenceForm[
+  "Decrypted Message in Decimal Form: ", {71, 114, 97, 109, 97, 32, 65, 108, 
+   101, 120, 97, 110, 100, 114, 117}],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.908821967226804*^9, 3.908822009132449*^9, {3.9088220511590195`*^9, 
+   3.9088220775452127`*^9}, {3.9088221307694893`*^9, 3.9088221575811205`*^9}, 
+   3.908822259069826*^9},
+ CellLabel->
+  "During evaluation of \
+In[563]:=",ExpressionUUID->"2ee7d032-cb60-498d-821f-10a56555a5fb"]
+}, Open  ]],
+
+Cell[BoxData["True"], "Output",
+ CellChangeTimes->{
+  3.90882191471871*^9, 3.9088219672308507`*^9, 3.908822009139456*^9, {
+   3.9088220511680593`*^9, 3.908822077553214*^9}, {3.9088221307764835`*^9, 
+   3.9088221575911226`*^9}, 3.908822259073827*^9},
+ CellLabel->
+  "Out[573]=",ExpressionUUID->"3f7df6e8-9a67-43b5-92f4-a8fd36b7df55"]
+}, Open  ]]
+},
+WindowSize->{760, 833},
+WindowMargins->{{Automatic, 523}, {47, Automatic}},
+FrontEndVersion->"12.1 for Microsoft Windows (64-bit) (June 9, 2020)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"9c803c84-4e37-4d24-afba-72164608f185"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 5586, 147, 770, "Input",ExpressionUUID->"c4b33d4c-22f6-4451-b904-82f896e93d9f"],
+Cell[CellGroupData[{
+Cell[6191, 173, 800, 18, 41, "Print",ExpressionUUID->"3cdcb6b9-6dc6-4a18-833d-2384959b63d3"],
+Cell[6994, 193, 804, 18, 41, "Print",ExpressionUUID->"2ee7d032-cb60-498d-821f-10a56555a5fb"]
+}, Open  ]],
+Cell[7813, 214, 332, 6, 32, "Output",ExpressionUUID->"3f7df6e8-9a67-43b5-92f4-a8fd36b7df55"]
+}, Open  ]]
+}
+]
+*)
+

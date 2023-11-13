@@ -1,0 +1,246 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.1' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      9459,        236]
+NotebookOptionsPosition[      8977,        219]
+NotebookOutlinePosition[      9375,        235]
+CellTagsIndexPosition[      9332,        232]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"Step", " ", "1"}], ":", 
+    RowBox[{
+    "Generate", " ", "two", " ", "prime", " ", "numbers", " ", "p", " ", 
+     "and", " ", "q"}]}], "*)"}], 
+  RowBox[{
+   RowBox[{
+    RowBox[{"p", "=", 
+     RowBox[{"RandomPrime", "[", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"2", "^", "1023"}], ",", 
+        RowBox[{
+         RowBox[{"2", "^", "1024"}], "-", "1"}]}], "}"}], "]"}]}], ";"}], 
+   "\n", 
+   RowBox[{
+    RowBox[{"q", "=", 
+     RowBox[{"RandomPrime", "[", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"2", "^", "1023"}], ",", 
+        RowBox[{
+         RowBox[{"2", "^", "1024"}], "-", "1"}]}], "}"}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"Step", " ", "2"}], ":", 
+     RowBox[{"Calculate", " ", "n", " ", "and", " ", "phi", 
+      RowBox[{"(", "n", ")"}]}]}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"n", "=", 
+     RowBox[{"p", "*", "q"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"phi", "=", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"p", "-", "1"}], ")"}], "*", 
+      RowBox[{"(", 
+       RowBox[{"q", "-", "1"}], ")"}]}]}], ";"}], "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"Step", " ", "3"}], ":", 
+     RowBox[{
+     "Choose", " ", "an", " ", "encryption", " ", "exponent", " ", "e"}]}], 
+    "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"e", "=", 
+     RowBox[{"RandomPrime", "[", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"2", "^", "16"}], "+", "1"}], ",", "phi"}], "}"}], "]"}]}], 
+    ";"}], "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"Step", " ", "4"}], ":", 
+     RowBox[{
+     "Compute", " ", "the", " ", "decryption", " ", "exponent", " ", "d"}]}], 
+    "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"d", "=", 
+     RowBox[{"PowerMod", "[", 
+      RowBox[{"e", ",", 
+       RowBox[{"-", "1"}], ",", "phi"}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"Step", " ", "5"}], ":", 
+     RowBox[{
+     "Convert", " ", "the", " ", "message", " ", "to", " ", "a", " ", 
+      "numeric", " ", "representation"}]}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"message", "=", "\"\<Grama Alexandru\>\""}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"asciiValues", "=", 
+     RowBox[{"ToCharacterCode", "[", "message", "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"decimalMessage", "=", 
+     RowBox[{"FromDigits", "[", 
+      RowBox[{"asciiValues", ",", "256"}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"Step", " ", "6"}], ":", 
+     RowBox[{"Encrypt", " ", "the", " ", "message"}]}], "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"encryptedMessage", "=", 
+     RowBox[{"PowerMod", "[", 
+      RowBox[{"decimalMessage", ",", "e", ",", "n"}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"Step", " ", "7"}], ":", 
+     RowBox[{"Decrypt", " ", "the", " ", "message"}]}], "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"decryptedMessage", "=", 
+     RowBox[{"PowerMod", "[", 
+      RowBox[{"encryptedMessage", ",", "d", ",", "n"}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Convert", " ", "the", " ", "decrypted", " ", "message", " ", "back", " ",
+      "to", " ", "text"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"decryptedText", "=", 
+     RowBox[{"FromCharacterCode", "[", 
+      RowBox[{"IntegerDigits", "[", 
+       RowBox[{"decryptedMessage", ",", "256"}], "]"}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Output", " ", "the", " ", "results"}], "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"privateKey", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"d", ",", "n"}], "}"}]}], ",", 
+     RowBox[{"publicKey", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"e", ",", "n"}], "}"}]}], ",", "decimalMessage", ",", 
+     "encryptedMessage", ",", "decryptedText"}], "}"}], "\n"}]}]], "Input",
+ CellChangeTimes->{{3.9082919814059563`*^9, 3.9082919814069667`*^9}},
+ CellLabel->
+  "In[238]:=",ExpressionUUID->"7c79fc88-a68a-4e3e-a0de-3b69de778c7b"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"GenerateAsymmetricKeyPair", "[", 
+      RowBox[{"\<\"RSA\"\>", ",", 
+       RowBox[{"\<\"KeySize\"\>", "\[Rule]", "2048"}]}], "]"}], 
+     "[", "\<\"PrivateKey\"\>", "]"}], "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{
+     "850820034767498835131374812582234364077375602743803187295595786069725207\
+765051569534290036303766061545081945947092861693341062984872740729912916974393\
+019471341986067335107913148507462620849384185352659380848494159577133293228514\
+723160669745699275246726626308235470154712392105149725557558061409835721114180\
+647692291986134882049020306780841693008388788758360624793053344710231016450720\
+118178923704591859534537058451838367850148033094801930818800425490599017638529\
+870399894804258896342186689780030041389694157329641807878750624451805123858899\
+5974975505812158708022428131575235537798176350505746395058790665507198432117",
+       ",", "12986761648752415901844238909054426702822521773007953966070641313\
+135888535898636976419367845064366343837566720830021787462049502919803135258799\
+514164167027642409178034312992731627898265956848551822961095518349078155856540\
+477439006146893261801407930531409638772801928455949004627421242020371893496925\
+671450802179102191255421075585643643923028147439994540922327113693892888929514\
+435901533149730046122324542485018327241920614239366185861760660085605276694137\
+513280796096123548432244111701604135371714514098994199284613794584143847310503\
+717180216153216720358385885599765141300691597963815713506895252925419836049920\
+099903"}], "}"}]}], ",", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"GenerateAsymmetricKeyPair", "[", 
+      RowBox[{"\<\"RSA\"\>", ",", 
+       RowBox[{"\<\"KeySize\"\>", "\[Rule]", "2048"}]}], "]"}], 
+     "[", "\<\"PublicKey\"\>", "]"}], "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{
+     "127105802395294158844474219088115236044907576604739312486367497338835924\
+799247841363613137140261834443273028866244563970097443941972153712174428386836\
+209883784856467563711268461519871280671464557287850832504706319606720402395950\
+782363451951619018900036629081203359050540975662935843117545020918721885282453\
+878188163133423180705158705142551152351508002983989245260419361433662864693223\
+671950005995813790032269953084882051577164571783167383324248556996582790375302\
+638088064238963032994040814744219377562435913490380658981833304165823061367836\
+71159071450640283891834183711871572857529609839617433820324505710798465690261"\
+, ",", "1298676164875241590184423890905442670282252177300795396607064131313588\
+853589863697641936784506436634383756672083002178746204950291980313525879951416\
+416702764240917803431299273162789826595684855182296109551834907815585654047743\
+900614689326180140793053140963877280192845594900462742124202037189349692567145\
+080217910219125542107558564364392302814743999454092232711369389288892951443590\
+153314973004612232454248501832724192061423936618586176066008560527669413751328\
+079609612354843224411170160413537171451409899419928461379458414384731050371718\
+021615321672035838588559976514130069159796381571350689525292541983604992009990\
+3"}], "}"}]}], ",", "370972990633837133300571429102973557", ",", 
+   "10899662518044842421721012115316227499713956812967346573016690632122618765\
+597155964158206753554088341206939109694766131392143916960081879164210609613612\
+932759136166526529942662575697636333702165980605964461303818274176730023025467\
+151473817438598354973137865790180721380951177422154126085944409831452377614215\
+033778910242625214060937185989659726907100465791682340787584692091817755870651\
+295075600492251917054613174149677486075966792474400104744326586129068035987373\
+931721445680466691314665775622717512962661283837262775479300232040830496075085\
+770133048231044196809059410695480597449224063351836282329845178256518989007", 
+   ",", "\<\"Grama Alexandru\"\>"}], "}"}]], "Output",
+ CellChangeTimes->{3.9082919837502337`*^9},
+ CellLabel->
+  "Out[250]=",ExpressionUUID->"c8a8da3a-1238-4614-a2ce-812c83b003d4"]
+}, Open  ]]
+},
+WindowSize->{759, 813},
+WindowMargins->{{572, Automatic}, {56, Automatic}},
+FrontEndVersion->"12.1 for Microsoft Windows (64-bit) (June 9, 2020)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"757c8562-957e-4489-b963-0a98d5ca1d67"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 4356, 128, 580, "Input",ExpressionUUID->"7c79fc88-a68a-4e3e-a0de-3b69de778c7b"],
+Cell[4939, 152, 4022, 64, 871, "Output",ExpressionUUID->"c8a8da3a-1238-4614-a2ce-812c83b003d4"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
+
